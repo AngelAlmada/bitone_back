@@ -6,9 +6,10 @@ import { AuthModule } from './auth/auth.module';
 import { HelloModule } from './hello/hello.module';
 import { PaymentsModule } from './payments/payments.module';
 import { FirebaseModule } from './firebase/firebase.module';
+import { DealerModule } from './dealer/dealer.module';
 
 @Module({
-  imports: [UsersModule, AuthModule, HelloModule, PaymentsModule, FirebaseModule],
+  imports: [UsersModule, AuthModule, HelloModule, PaymentsModule, FirebaseModule, DealerModule],
   controllers: [AppController],
   providers: [AppService],
 })

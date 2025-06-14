@@ -1,4 +1,11 @@
-import { IsInt, IsNotEmpty, IsString, IsEmail, Length, IsOptional } from 'class-validator';
+import {
+  IsInt,
+  IsNotEmpty,
+  IsString,
+  IsEmail,
+  Length,
+  IsOptional,
+} from 'class-validator';
 
 export class CreateUserDto {
   @IsInt()
@@ -22,15 +29,15 @@ export class CreateUserDto {
 
   @IsString()
   @IsNotEmpty()
-  @Length(2, 2)
+  @Length(1, 2)
   rol: string;
 
-  @IsInt()
-  @IsOptional() // si puede ser null o no enviado
-  id_dealer?: number;
+  @IsString()
+  @IsOptional()
+  id_dealer?: string;
 
   @IsString()
   @IsNotEmpty()
-  @Length(2, 2)
+  @Length(1, 2)
   status: string;
 }
