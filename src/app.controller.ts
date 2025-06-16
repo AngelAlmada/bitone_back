@@ -2,6 +2,8 @@ import { Controller, Get, Post,Query, Res,Body } from '@nestjs/common';
 import { AppService } from './app.service';
 import { Response } from 'express';
 import { WhatsappService } from './whatsapp.service';
+import * as dotenv from 'dotenv'
+dotenv.config
  
 @Controller('webhook')
 export class AppController {
@@ -15,7 +17,7 @@ export class AppController {
     @Query('hub.challenge') challenge: string,
     @Res() res: Response,
   ) {
-    const VERIFY_TOKEN = 'verificacion_mi_bot'; // el que pusiste en Meta en admin webhook
+    const VERIFY_TOKEN = process.env.VERIFY_TOKEN // el que pusiste en Meta en admin webhook
     if (mode === 'subscribe' && token === VERIFY_TOKEN) {
       console.log('Webhook verificado correctamente');
       return res.status(200).send(challenge);

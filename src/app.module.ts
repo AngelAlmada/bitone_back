@@ -6,11 +6,12 @@ import { AuthModule } from './auth/auth.module';
 import { HelloModule } from './hello/hello.module';
 import { PaymentsModule } from './payments/payments.module';
 import { FirebaseModule } from './firebase/firebase.module';
-import { WhatsappService } from './whatsapp.service';
+import { WhatsappService } from './whatsapp/whatsapp.service';
+import { FirebaseService } from './firebase/firebase.service';
 
 @Module({
   imports: [UsersModule, AuthModule, HelloModule, PaymentsModule, FirebaseModule],
   controllers: [AppController],
-  providers: [AppService,WhatsappService],
+  providers: [AppService,WhatsappService,FirebaseService],
 })
 export class AppModule {}

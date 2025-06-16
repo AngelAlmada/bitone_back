@@ -1,42 +1,17 @@
-// src/whatsapp.service.ts
-import { Injectable } from '@nestjs/common';
-import axios from 'axios';
-import { Logger } from '@nestjs/common';
+import { Injectable,Logger } from "@nestjs/common";
+import axios from "axios";
 
-const WHATSAPP_TOKEN = 'EAAbTay7hTwwBO097afM2zHMVCUabXZBycMal9DgneZCt36GbMRobtD2c7WNGjaTM0ExtxLWU361pMgORmsc34H6hfQzvmCORLZAgQ8HtiDoUJZAhuAwR1Shu6fXl6M3P2qqMAOqXTBahuF2uPkTDcPiDM5DXVt9e7jh7hx70zaQhiPlZCmcVpfiifPRG89XODooql9C4fisQnVuoLlp1vOnpLbCQF3ZCIxQZCMZD'; // El Token de accceso
-const PHONE_NUMBER_ID = '678992935298299'; // El ID del número en WhatsApp Cloud
+import * as dotenv from 'dotenv'
+dotenv.config();
+
+const WHATSAPP_TOKEN = process.env.WHATSAPP_TOKEN // El Token de accceso
+const PHONE_NUMBER_ID = process.env.PHONE_NUMBER_ID; // El ID del número en WhatsApp Cloud
 
 @Injectable()
-export class WhatsappService {
-  private readonly logger = new Logger(WhatsappService.name);
+export class WhatsappSenderService{
+    private readonly logger = new Logger(WhatsappSenderService.name);
 
-  async handleIncoming(body: any) { //flujo principal del chat
-    try {
-      const entry = body.entry?.[0];
-      const changes = entry?.changes?.[0];
-      const message = changes?.value?.messages?.[0];
-      const from = message?.from;
-      const text = message?.text?.body?.toLowerCase();
-
-      
-      this.logger.log(`Cuerpo recibido: ${JSON.stringify(body, null, 2)}`);
-
-      if (!message || !from) return;
-
-      // Acción basada en botones
-      if (message.type === 'button' && message.button?.payload === 'Ver Menu') {
-        await this.sendMenuImage(from);
-        return;
-      }
-
-      // Primera interacción o texto libre
-      await this.sendMenuTemplate(from);
-    } catch (error) {
-      this.logger.error('Error en handleIncoming:', error?.response?.data || error.message);
-    }
-  }
-
-  async sendMessage(to: string, text: string) { //enviar mensaje
+    async sendMessage(to: string, text: string) { //enviar mensaje
     try {
       const url = `https://graph.facebook.com/v19.0/${PHONE_NUMBER_ID}/messages`;
       await axios.post(
@@ -134,5 +109,7 @@ export class WhatsappService {
     this.logger.error('Error al enviar plantilla de bienvenida:', error?.response?.data || error.message);
   }
 }
+
+
 
 }
