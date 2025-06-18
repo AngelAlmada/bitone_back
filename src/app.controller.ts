@@ -1,7 +1,7 @@
 import { Controller, Get, Post,Query, Res,Body } from '@nestjs/common';
 import { AppService } from './app.service';
 import { Response } from 'express';
-import { WhatsappService } from './whatsapp.service';
+import { WhatsappService } from './whatsapp/whatsapp.service';
 import * as dotenv from 'dotenv'
 dotenv.config
  

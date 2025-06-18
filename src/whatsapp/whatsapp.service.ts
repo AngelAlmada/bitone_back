@@ -1,6 +1,7 @@
 // src/whatsapp.service.ts
 import { Injectable, Logger } from '@nestjs/common';
 import { FirebaseService } from 'src/firebase/firebase.service';
+import { checkFirstMessageOfDay } from './whatsapp.utils';
 import { WhatsappSenderService } from './whatsapp-sender.service';
 import axios from 'axios';
 import * as dotenv from 'dotenv' //tokens de whatsapp
@@ -21,11 +22,35 @@ export class WhatsappService {
 
   async handleIncoming(body: any) { //flujo principal del chat
     try {
+      const db = this.firebaseService.getFirestore();
+
       const entry = body.entry?.[0];
       const changes = entry?.changes?.[0];
-      const message = changes?.value?.messages?.[0];
+      const value = changes?.value;
+
+      if (!value?.messages || !value.contacts) {
+      this.logger.warn('Evento no relacionado con mensajes, se ignora.');
+      return;
+      }
+
+      const contacto = value.contacts[0];
+      const message = value.messages[0];
+
+
       const from = message?.from;
       const text = message?.text?.body?.toLowerCase();
+
+      const nombre = contacto?.profile?.name || 'Cliente';
+      const waId = contacto?.wa_id || from;
+
+
+
+      const esPrimerMensaejeDelDia = await checkFirstMessageOfDay(db,waId,nombre, from);
+
+      if (esPrimerMensaejeDelDia) { 
+        await this.whatsappSender.sendWelcomeTemplate(from);
+    }
+
 
       
       this.logger.log(`Cuerpo recibido: ${JSON.stringify(body, null, 2)}`);
