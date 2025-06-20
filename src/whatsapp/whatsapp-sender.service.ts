@@ -4,14 +4,22 @@ import axios from "axios";
 import * as dotenv from 'dotenv'
 dotenv.config();
 
+import { EncryptionService } from "src/encryption.service";
+
+  
 const WHATSAPP_TOKEN = process.env.WHATSAPP_TOKEN // El Token de accceso
 const PHONE_NUMBER_ID = process.env.PHONE_NUMBER_ID; // El ID del número en WhatsApp Cloud
 
 @Injectable()
 export class WhatsappSenderService{
     private readonly logger = new Logger(WhatsappSenderService.name);
+    
+    constructor(
+  private readonly encryptionService: EncryptionService,
+) {}
 
-    async sendMessage(to: string, text: string) { //enviar mensaje
+
+  async sendMessage(to: string, text: string) { //enviar mensaje
     try {
       const url = `https://graph.facebook.com/v19.0/${PHONE_NUMBER_ID}/messages`;
       await axios.post(
@@ -33,31 +41,46 @@ export class WhatsappSenderService{
     }
   }
 
-  async sendMenuTemplate(to: string) { //plantilla menu principal
-    try {
-      const url = `https://graph.facebook.com/v19.0/${PHONE_NUMBER_ID}/messages`;
-      await axios.post(
-        url,
-        {
-          messaging_product: 'whatsapp',
-          to,
-          type: 'template',
-          template: {
-            name: 'menu_principal',
-            language: { code: 'es' },
-          },
+  async sendMenuTemplate(to: string, encryptedWaId: string) {
+  try {
+    const url = `https://graph.facebook.com/v19.0/${PHONE_NUMBER_ID}/messages`;
+    await axios.post(
+      url,
+      {
+        messaging_product: 'whatsapp',
+        to,
+        type: 'template',
+        template: {
+          name: 'menu_principal',
+          language: { code: 'es' },
+          components: [
+            {
+              type: 'button',
+              sub_type: 'url',
+              index: 1, // el botón de "Realizar pedido"
+              parameters: [
+                {
+                  type: 'text',
+                  text: encryptedWaId,
+                },
+              ],
+            },
+          ],
         },
-        {
-          headers: {
-            Authorization: `Bearer ${WHATSAPP_TOKEN}`,
-            'Content-Type': 'application/json',
-          },
-        }
-      );
-    } catch (error) {
-      this.logger.error('Error al enviar plantilla de menú:', error?.response?.data || error.message);
-    }
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${WHATSAPP_TOKEN}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+  } catch (error) {
+    this.logger.error('Error al enviar plantilla de menú:', error?.response?.data || error.message);
   }
+}
+
+
 
   async sendMenuImage(to: string) {  //boton del menu - plantilla menu principal
     try {

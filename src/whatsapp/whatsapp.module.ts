@@ -5,10 +5,13 @@ import { Injectable } from '@nestjs/common/interfaces';
 import { FirebaseModule } from 'src/firebase/firebase.module';
 import { checkFirstMessageOfDay } from './whatsapp.utils';
 import { FirebaseService } from 'src/firebase/firebase.service';
+import { EncryptionService } from 'src/encryption.service';
 
 @Module({
   imports: [FirebaseModule],
-  providers: [WhatsappService, WhatsappSenderService,FirebaseService],
-  exports: [WhatsappService,WhatsappSenderService],
+
+  providers: [WhatsappService, WhatsappSenderService,FirebaseService,EncryptionService],
+
+  exports: [WhatsappService,WhatsappSenderService,EncryptionService],
 })
 export class WhatsappModule {}

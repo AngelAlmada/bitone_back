@@ -5,6 +5,7 @@ import { checkFirstMessageOfDay } from './whatsapp.utils';
 import { WhatsappSenderService } from './whatsapp-sender.service';
 import axios from 'axios';
 import * as dotenv from 'dotenv' //tokens de whatsapp
+import { EncryptionService } from 'src/encryption.service';
 dotenv.config(); 
 
 const WHATSAPP_TOKEN = process.env.WHATSAPP_TOKEN // El Token de accceso
@@ -18,6 +19,7 @@ export class WhatsappService {
    constructor(
     private readonly firebaseService: FirebaseService,
     private readonly whatsappSender: WhatsappSenderService,
+    private readonly encryptionService: EncryptionService
   ) {}
 
   async handleIncoming(body: any) { //flujo principal del chat
@@ -33,6 +35,7 @@ export class WhatsappService {
       return;
       }
 
+
       const contacto = value.contacts[0];
       const message = value.messages[0];
 
@@ -42,8 +45,10 @@ export class WhatsappService {
 
       const nombre = contacto?.profile?.name || 'Cliente';
       const waId = contacto?.wa_id || from;
+      const encryptedWaId = this.encryptionService.encrypt(waId);
 
 
+    
 
       const esPrimerMensaejeDelDia = await checkFirstMessageOfDay(db,waId,nombre, from);
 
@@ -64,7 +69,8 @@ export class WhatsappService {
       }
 
       // Primera interacción o texto libre
-      await this.whatsappSender.sendMenuTemplate(from);
+       // Aquí usas tu función de cifrado
+      await this.whatsappSender.sendMenuTemplate(from,encryptedWaId);
     } catch (error) {
       this.logger.error('Error en handleIncoming:', error?.response?.data || error.message);
     }
