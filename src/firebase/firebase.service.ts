@@ -9,14 +9,18 @@ export class FirebaseService {
   private bucket: any;
 
   constructor() {
+  if (!admin.apps.length) {
     this.app = admin.initializeApp({
       credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
       storageBucket: 'deliverybitone.firebasestorage.app', // nombre de tu bucket
     });
 
-    // Aquí debes llamar a bucket() para obtener el Bucket
-    this.bucket = this.app.storage().bucket();
+  } else {
+    this.app = admin.app(); // Usa la app ya existente
+
   }
+}
+
 
   getAuth() {
     return this.app.auth();
