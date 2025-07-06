@@ -35,9 +35,9 @@ export async function checkFirstMessageOfDay(
   }
 
   const data = doc.data();
-  const ultimoMensaje = data?.ultimoMensaje?.toDate();
+  const lastMessage = data?.last_message?.toDate();
 
-  if (!ultimoMensaje || isNaN(ultimoMensaje.getTime())) {
+  if (!lastMessage || isNaN(lastMessage.getTime())) {
     // Si no hay timestamp válido, lo consideramos como primer mensaje
     await clienteRef.update({
       last_mesagge: admin.firestore.FieldValue.serverTimestamp(),
@@ -45,7 +45,7 @@ export async function checkFirstMessageOfDay(
     return true;
   }
 
-  const fechaUltimo = new Date(ultimoMensaje);
+  const fechaUltimo = new Date(lastMessage);
   fechaUltimo.setHours(0, 0, 0, 0);
 
   if (fechaUltimo.getTime() < hoy.getTime()) {
