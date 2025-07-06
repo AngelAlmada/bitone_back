@@ -10,7 +10,7 @@ export class AuthMiddleware implements NestMiddleware {
       throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
     }
 
-        if (authorization !== 'A' || 'RE') {
+        if (authorization !== 'A') {
       throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
     }
     next();

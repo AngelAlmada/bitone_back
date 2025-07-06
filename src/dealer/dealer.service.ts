@@ -220,7 +220,7 @@ export class DealerService {
     }
 
     // Actualizar el status a "I" en lugar de eliminar
-    await docRef.update({ status: 'A' });
+    await docRef.update({ status: 'Ab' });
 
     return {
       message: `Dealer con id ${id} marcado como inactivo correctamente`,

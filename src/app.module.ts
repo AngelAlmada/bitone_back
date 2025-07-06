@@ -7,9 +7,10 @@ import { HelloModule } from './hello/hello.module';
 import { PaymentsModule } from './payments/payments.module';
 import { FirebaseModule } from './firebase/firebase.module';
 import { DealerModule } from './dealer/dealer.module';
+import { ProductsModule } from './products/products.module';
 
 @Module({
-  imports: [UsersModule, AuthModule, HelloModule, PaymentsModule, FirebaseModule, DealerModule],
+  imports: [UsersModule, AuthModule, HelloModule, PaymentsModule, FirebaseModule, DealerModule, ProductsModule],
   controllers: [AppController],
   providers: [AppService],
 })
