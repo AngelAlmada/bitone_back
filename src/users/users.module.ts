@@ -11,12 +11,11 @@ import { AuthMiddleware } from './auth/auth.middleware';
 import { CreateModule } from './create/create.module';
 import { ListModule } from './list/list.module';
 import { DesactivateModule } from './desactivate/desactivate.module';
-import { UpdateModule } from './update/update.module';
 
 @Module({
   controllers: [UsersController],
   providers: [UsersService],
-  imports: [CreateModule, ListModule, DesactivateModule, UpdateModule],
+  imports: [CreateModule, ListModule, DesactivateModule],
 })
 export class UsersModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

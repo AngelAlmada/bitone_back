@@ -1,19 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import * as admin from 'firebase-admin';
 import * as serviceAccount from './firebase-key.json';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class FirebaseService {
   private app: admin.app.App;
+  private bucket: any;
 
   constructor() {
   if (!admin.apps.length) {
     this.app = admin.initializeApp({
       credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
-      storageBucket: 'deliverybitone.appspot.com',
+      storageBucket: 'deliverybitone.firebasestorage.app', // nombre de tu bucket
     });
+
   } else {
     this.app = admin.app(); // Usa la app ya existente
+
   }
 }
 
@@ -27,6 +31,34 @@ export class FirebaseService {
   }
 
   getStorage() {
-    return this.app.storage().bucket();
+    return this.bucket;
+  }
+
+  async uploadImage(
+    fileBuffer: Buffer,
+    filename: string,
+    mimetype: string,
+  ): Promise<string> {
+    const uniqueName = `${Date.now()}_${filename}`;
+    const file = this.bucket.file(`images/${uniqueName}`);
+
+    const uuid = uuidv4();
+
+    await file.save(fileBuffer, {
+      metadata: {
+        contentType: mimetype,
+        metadata: {
+          firebaseStorageDownloadTokens: uuid,
+        },
+      },
+      public: false,
+      validation: 'md5',
+    });
+
+    const url = `https://firebasestorage.googleapis.com/v0/b/${this.bucket.name}/o/${encodeURIComponent(
+      file.name,
+    )}?alt=media&token=${uuid}`;
+
+    return url;
   }
 }

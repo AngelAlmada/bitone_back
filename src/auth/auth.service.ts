@@ -12,7 +12,14 @@ export class authService {
       .collection('users');
   }
 
-  async getAuth(user: AuthDto): Promise<{ success: boolean; email?: string; role?: string }> {
+  async getAuth(
+    user: AuthDto,
+  ): Promise<{
+    success: boolean;
+    message?: string;
+    email?: string;
+    rol?: string;
+  }> {
     const snapshot = await this.usersCollections
       .where('email', '==', user.email)
       .where('password', '==', user.password)
@@ -20,13 +27,22 @@ export class authService {
 
     if (!snapshot.empty) {
       const userData = snapshot.docs[0].data();
+
+      if (userData.status === 'I') {
+        // Usuario desactivado
+        return {
+          message: 'Usuario desactivado',
+          success: false
+        };
+      }
+
       return {
         success: true,
         email: userData.email,
-        role: userData.role, // aquí debería estar el valor 'A' o 'U' o lo que uses
+        rol: userData.rol,
       };
     }
 
-    return { success: false };
+    return { success: false, message: 'Credenciales inválidas' };
   }
 }
