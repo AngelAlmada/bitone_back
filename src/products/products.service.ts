@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { FirebaseService } from 'src/firebase/firebase.service';
@@ -26,12 +26,24 @@ export class ProductsService {
 
   async findAll() {
     const snapshot = await this.productController.get();
-    const products = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    const products = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
     return products;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} product`;
+  async findOne(id: string) {
+    const data = await this.productController.doc(id).get();
+
+    if (!data.exists) {
+      throw new NotFoundException(`Producto con el id ${id} no encontrado`);
+    }
+
+    return {
+      id: data.id,
+      ...data.data(),
+    };
   }
 
   update(id: number, updateProductDto: UpdateProductDto) {
