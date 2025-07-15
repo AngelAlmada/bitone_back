@@ -13,12 +13,14 @@ import { ProductsModule } from './products/products.module';
 import { WhatsappService } from './whatsapp/whatsapp.service';
 import { FirebaseService } from './firebase/firebase.service';
 import { WhatsappModule } from './whatsapp/whatsapp.module';
+import { ClientController } from './client/client.controller';
+import { EncryptionService } from './encryption.service';
 
 @Module({
   imports: [UsersModule, AuthModule, HelloModule, PaymentsModule, FirebaseModule, DealerModule, ProductsModule, WhatsappModule],
 
 
-  controllers: [AppController],
-  providers: [AppService,WhatsappService,FirebaseService],
+  controllers: [AppController, ClientController],
+  providers: [AppService,WhatsappService,FirebaseService, EncryptionService],
 })
 export class AppModule {}

@@ -48,16 +48,12 @@ export class WhatsappService {
       const encryptedWaId = this.encryptionService.encrypt(waId);
 
 
-    
-
       const esPrimerMensaejeDelDia = await checkFirstMessageOfDay(db,waId,nombre, from);
 
       if (esPrimerMensaejeDelDia) { 
         await this.whatsappSender.sendWelcomeTemplate(from);
     }
 
-
-      
       this.logger.log(`Cuerpo recibido: ${JSON.stringify(body, null, 2)}`);
 
       if (!message || !from) return;
