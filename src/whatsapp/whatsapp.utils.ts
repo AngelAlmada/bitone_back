@@ -40,7 +40,7 @@ export async function checkFirstMessageOfDay(
   if (!lastMessage || isNaN(lastMessage.getTime())) {
     // Si no hay timestamp válido, lo consideramos como primer mensaje
     await clienteRef.update({
-      last_mesagge: admin.firestore.FieldValue.serverTimestamp(),
+      last_message: admin.firestore.FieldValue.serverTimestamp(),
     });
     return true;
   }
