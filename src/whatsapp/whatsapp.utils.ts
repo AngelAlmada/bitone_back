@@ -50,7 +50,7 @@ export async function checkFirstMessageOfDay(
 
   if (fechaUltimo.getTime() < hoy.getTime()) {
     await clienteRef.update({
-      last_mesagge: admin.firestore.FieldValue.serverTimestamp(),
+      last_message: admin.firestore.FieldValue.serverTimestamp(),
     });
     return true;
   }
