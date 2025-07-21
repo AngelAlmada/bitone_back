@@ -6,19 +6,23 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   // Habilita CORS para permitir peticiones desde otro origen
- app.enableCors({
-  origin: ['http://localhost:5173', 'https://delivery-tacos.netlify.app'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: false, // actívalo si usas cookies o auth con sesiones
-});
-
+  app.enableCors({
+    origin: (origin, callback) => {
+      const allowedOrigins = ['https://delivery-tacos.netlify.app'];
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+  });
 
   // Agrega el pipe global de validación con whitelist y forbidNonWhitelisted
   app.useGlobalPipes(
     new ValidationPipe({
-      whitelist: true,              // elimina propiedades no definidas en el DTO
-      forbidNonWhitelisted: true,   // arroja error si hay propiedades extras
-      transform: true,              // transforma el payload a la clase DTO
+      whitelist: true, // elimina propiedades no definidas en el DTO
+      forbidNonWhitelisted: true, // arroja error si hay propiedades extras
+      transform: true, // transforma el payload a la clase DTO
     }),
   );
 

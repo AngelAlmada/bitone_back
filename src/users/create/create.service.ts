@@ -14,7 +14,7 @@ export class CreateService {
   }
 
   async createUser(user: CreateUserDto) {
-    // Convertir a objeto plano (evita prototype issues)
+    // Convertir a objeto plano (evita prototype issues)  
     const plainUser = { ...user };
 
     // Eliminar todas las propiedades que tengan valor undefined (como id)
