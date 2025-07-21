@@ -9,7 +9,7 @@ async function bootstrap() {
   app.enableCors({
     origin: (origin, callback) => {
       const allowedOrigins = ['https://delivery-tacos.netlify.app'];
-      if (!origin || allowedOrigins.includes(origin)) {
+      if (origin && allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
         callback(new Error('Not allowed by CORS'));
