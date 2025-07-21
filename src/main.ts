@@ -8,13 +8,20 @@ async function bootstrap() {
   // Habilita CORS para permitir peticiones desde otro origen
   app.enableCors({
     origin: (origin, callback) => {
-      const allowedOrigins = ['https://delivery-tacos.netlify.app'];
-      if (origin && allowedOrigins.includes(origin)) {
+      const allowedOrigins = [
+        'https://delivery-tacos.netlify.app',
+        // Agrega aquí tus dominios oficiales
+      ];
+
+      // Permite peticiones sin origin (como las de curl o servidores internos)
+      if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
         callback(new Error('Not allowed by CORS'));
       }
     },
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true, // si usas cookies o auth por sesión
   });
 
   // Agrega el pipe global de validación con whitelist y forbidNonWhitelisted
