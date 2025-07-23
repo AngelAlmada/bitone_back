@@ -46,8 +46,27 @@ export class ProductsService {
     };
   }
 
-  update(id: number, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
+  async update(id: string, updateProductDto: UpdateProductDto) {
+    const docRef = this.productController.doc(id);
+
+    const docSnapshot = await docRef.get();
+
+    if (!docSnapshot.exists) {
+      throw new NotFoundException(`Producto con el ${id} no encontrado`);
+    }
+
+    const sanitizedProduct = Object.fromEntries(
+      Object.entries(updateProductDto).filter(
+        ([_, value]) => value !== undefined,
+      ),
+    );
+
+    await docRef.update(sanitizedProduct);
+
+    return {
+      id,
+      ...sanitizedProduct,
+    };
   }
 
   remove(id: number) {
