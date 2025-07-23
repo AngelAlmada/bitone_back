@@ -8,7 +8,7 @@ async function bootstrap() {
   // Habilita CORS para permitir peticiones desde otro origen
  app.enableCors({
   origin: ['http://localhost:5173', 'https://delivery-tacos.netlify.app'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE','PUSH'],
   credentials: false, // actívalo si usas cookies o auth con sesiones
 });
 
