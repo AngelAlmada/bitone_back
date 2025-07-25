@@ -13,7 +13,7 @@ async function bootstrap() {
       'https://fastorder.bit-one.net',
     ],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PUSH'],
-    credentials: false, // actívalo si usas cookies o auth con sesiones
+    credentials: true, // actívalo si usas cookies o auth con sesiones
   });
 
   // Agrega el pipe global de validación con whitelist y forbidNonWhitelisted
