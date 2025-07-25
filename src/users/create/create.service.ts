@@ -5,7 +5,7 @@ import { FirebaseService } from 'src/firebase/firebase.service';
 // 
 @Injectable()
 export class CreateService {
-  private usersCollections;
+  private readonly usersCollections;
 
   constructor(private readonly firebaseService: FirebaseService) {
     this.usersCollections = this.firebaseService
