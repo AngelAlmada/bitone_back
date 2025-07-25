@@ -12,8 +12,9 @@ async function bootstrap() {
       'https://delivery-tacos.netlify.app',
       'https://fastorder.bit-one.net',
     ],
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PUSH'],
-    credentials: true, // actívalo si usas cookies o auth con sesiones
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
   });
 
   // Agrega el pipe global de validación con whitelist y forbidNonWhitelisted
