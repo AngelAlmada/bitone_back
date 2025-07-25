@@ -7,7 +7,7 @@ async function bootstrap() {
 
   // Habilita CORS para permitir peticiones desde otro origen
   app.enableCors({
-    origin: ['https://delivery-tacos.netlify.app', 'http://localhost:5173'],
+    origin: ['https://delivery-tacos.netlify.app', 'http://localhost:5173', 'https://fastorder.bit-one.net/'],
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     credentials: true,
   });
