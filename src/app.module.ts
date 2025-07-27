@@ -16,18 +16,19 @@ import { WhatsappModule } from './whatsapp/whatsapp.module';
 import { ClientController } from './client/client.controller';
 import { EncryptionService } from './encryption.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { User } from './users/create/entities/user.entity'; // Importa la entidad User
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'bit-one.net',        // Cambia según tu servidor
+      host: 'bit-one.net', // Cambia según tu servidor
       port: 3306,
       username: 'angelmi1_angelmha',
       password: 'Copete4549@',
       database: 'angelmi1_fastorder',
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: true,       // SOLO para desarrollo
+      entities: [User],
+      synchronize: true, // SOLO para desarrollo
     }),
 
     UsersModule,
