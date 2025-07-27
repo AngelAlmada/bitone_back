@@ -8,8 +8,8 @@ export class CreateController {
   constructor(private readonly createService: CreateService) {}
 
   @Post('/user')
-  create(@Body() user: CreateUserDto) {
-    return this.createService.createUser(user);
+  async create(@Body() user: CreateUserDto) {
+    return await this.createService.createUser(user);
   }
 
   @Patch('/user/:id')
@@ -17,6 +17,7 @@ export class CreateController {
     @Param('id') id: string,
     @Body() updateUserDto: UpdateUserDto,
   ) {
-    return this.createService.updateUser(id, updateUserDto);
+    const userId = Number(id);
+    return await this.createService.updateUser(userId, updateUserDto);
   }
 }

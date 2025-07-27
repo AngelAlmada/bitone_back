@@ -2,10 +2,13 @@
 import { Module } from '@nestjs/common';
 import { CreateService } from './create.service';
 import { CreateController } from './create.controller';
-import { FirebaseModule } from 'src/firebase/firebase.module'; // importa el módulo, no el servicio
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { User } from './entities/user.entity';  // importa la entidad User
 
 @Module({
-  imports: [FirebaseModule],  // Aquí sí importas el módulo
+  imports: [
+    TypeOrmModule.forFeature([User]),  // Importa el repositorio de User
+  ],
   controllers: [CreateController],
   providers: [CreateService],
 })

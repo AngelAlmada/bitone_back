@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import * as admin from 'firebase-admin';
 import { v4 as uuidv4 } from 'uuid';
 import * as dotenv from 'dotenv';
+import { FieldValue } from 'firebase-admin/firestore';
+
 
 dotenv.config(); // Cargar las variables .env
 

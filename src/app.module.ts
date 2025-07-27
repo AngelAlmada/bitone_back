@@ -15,12 +15,32 @@ import { FirebaseService } from './firebase/firebase.service';
 import { WhatsappModule } from './whatsapp/whatsapp.module';
 import { ClientController } from './client/client.controller';
 import { EncryptionService } from './encryption.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
-  imports: [UsersModule, AuthModule, HelloModule, PaymentsModule, FirebaseModule, DealerModule, ProductsModule, WhatsappModule],
+  imports: [
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: 'bit-one.net',        // Cambia según tu servidor
+      port: 3306,
+      username: 'angelmi1_angelmha',
+      password: 'Copete4549@',
+      database: 'angelmi1_fastorder',
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      synchronize: true,       // SOLO para desarrollo
+    }),
 
+    UsersModule,
+    AuthModule,
+    HelloModule,
+    PaymentsModule,
+    FirebaseModule,
+    DealerModule,
+    ProductsModule,
+    WhatsappModule,
+  ],
 
   controllers: [AppController, ClientController],
-  providers: [AppService,WhatsappService,FirebaseService, EncryptionService],
+  providers: [AppService, WhatsappService, FirebaseService, EncryptionService],
 })
 export class AppModule {}
